@@ -48,14 +48,17 @@ public class SpeedReader {
 		Graphics g = panel.getGraphics();
 		Font f = new Font("Courier", Font.BOLD, fontSize);
 		FontMetrics m = g.getFontMetrics(f);
+		WordGenerator text = new WordGenerator("test.txt");
 		int fontHeight = m.getHeight();
 		int yCoord = (height + fontHeight / 2) / 2;
-		WordGenerator text = new WordGenerator("test.txt");
+		
 		g.setFont(f);
 		width /= 2;
+		
 		while (text.hasNext()) {
 			String nextWord = text.next();
 			Offset o = findHorizOffset(nextWord, m);
+			
 			g.drawString(nextWord, width - o.total, yCoord);
 			g.setColor(Color.RED);
 			g.drawString(nextWord.substring(o.id, o.id + 1), width - o.centeredChar, yCoord);
