@@ -6,7 +6,6 @@ import java.io.IOException;
 class Offset {
 	public int id;
 	public int total;
-	public int preCenteredChar;
 	public int centeredChar;
 }
 
@@ -36,9 +35,9 @@ public class SpeedReader {
 		o.id = findCenteredCharId(word);
 
 		if (o.id > 0) {
-			o.preCenteredChar = m.stringWidth(word.substring(0, o.id));
+			int preCenteredChar = m.stringWidth(word.substring(0, o.id));
 			o.centeredChar = m.stringWidth(word.substring(o.id, o.id + 1)) / 2;
-			o.total = o.preCenteredChar + o.centeredChar;
+			o.total = preCenteredChar + o.centeredChar;
 		}
 		return o;
 	}
@@ -59,14 +58,13 @@ public class SpeedReader {
 			Offset o = findHorizOffset(nextWord, m);
 			g.drawString(nextWord, width - o.total, yCoord);
 			g.setColor(Color.RED);
-			g.drawString(
-					nextWord.substring(o.id, o.id + 1), 
-					width - o.centeredChar, 
-					yCoord);
+			g.drawString(nextWord.substring(o.id, o.id + 1), width - o.centeredChar, yCoord);
 			g.setColor(Color.BLACK);
 			Thread.sleep(60000 / wpm);
 			panel.clear();
 		}
+		System.out.println("Total words read: " + text.getWordCount());
+		System.out.println("Total sentences read: " + text.getSentCount());
 	}
 
 	public static int[] strArgsToIntArgs(String[] args) {
