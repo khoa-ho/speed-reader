@@ -3,14 +3,22 @@ package hw2;
 import java.awt.*;
 import java.io.IOException;
 
+class Offset {
+	public int id;
+	public int total;
+	public int preCenteredChar;
+	public int centeredChar;
+}
+
 public class SpeedReader {
-	public static int findHorizOffset(String word, FontMetrics m) {
+
+	public static int findCenteredCharId(String word) {
 		int wordLen = word.length();
-		int offset = wordLen / 2;
 		int id;
-		if (wordLen <= 2) {
+
+		if (wordLen <= 1) {
 			id = 0;
-		} else if (wordLen >= 3 && wordLen <= 5) {
+		} else if (wordLen >= 2 && wordLen <= 5) {
 			id = 1;
 		} else if (wordLen >= 6 && wordLen <= 9) {
 			id = 2;
@@ -19,12 +27,20 @@ public class SpeedReader {
 		} else {
 			id = 4;
 		}
-		if (id > 0) {
-			int preCenteredCharOffset = m.stringWidth(word.substring(0, id));
-			int centeredCharOffset = m.stringWidth(word.substring(id, id + 1)) / 2;
-			offset = preCenteredCharOffset + centeredCharOffset;
+		return id;
+	}
+
+	public static Offset findHorizOffset(String word, FontMetrics m) {
+		Offset o = new Offset();
+		o.total = word.length() / 2;
+		o.id = findCenteredCharId(word);
+
+		if (o.id > 0) {
+			o.preCenteredChar = m.stringWidth(word.substring(0, o.id));
+			o.centeredChar = m.stringWidth(word.substring(o.id, o.id + 1)) / 2;
+			o.total = o.preCenteredChar + o.centeredChar;
 		}
-		return offset;
+		return o;
 	}
 
 	public static void speedReader(String filename, int width, int height, int fontSize, int wpm)
@@ -40,8 +56,14 @@ public class SpeedReader {
 		width /= 2;
 		while (text.hasNext()) {
 			String nextWord = text.next();
-			int offset = findHorizOffset(nextWord, m);
-			g.drawString(nextWord, width - offset, yCoord);
+			Offset o = findHorizOffset(nextWord, m);
+			g.drawString(nextWord, width - o.total, yCoord);
+			g.setColor(Color.RED);
+			g.drawString(
+					nextWord.substring(o.id, o.id + 1), 
+					width - o.centeredChar, 
+					yCoord);
+			g.setColor(Color.BLACK);
 			Thread.sleep(60000 / wpm);
 			panel.clear();
 		}
