@@ -9,6 +9,13 @@ class Offset {
 	public int centeredChar;
 }
 
+class Bound {
+	public int yDrawnStrTop;
+	public int yDrawnStrBottom;
+	public int width;
+	public int fontHeight;
+}
+
 public class SpeedReader {
 
 	public static int findCenteredCharId(String word) {
@@ -41,19 +48,29 @@ public class SpeedReader {
 		}
 		return o;
 	}
-	
-	public static void drawFrame(Graphics g, int width, int height, int fontHeight) {
+
+	public static Bound drawFrame(Graphics g, int width, int height, int fontHeight) {
+		Bound b = new Bound();
 		int xCenter = width / 2;
 		int yCenter = height / 2;
-		int yUpperBound = (int) (yCenter - fontHeight * 0.6);
-		int yLowerBound = (int) (yCenter + fontHeight * 0.6);
-		int y1 = (int) (yCenter - fontHeight * 0.5);
-		int y2 = (int) (yCenter + fontHeight * 0.5);
-		
-		g.drawLine(0, yUpperBound, width, yUpperBound);
-		g.drawLine(0, yLowerBound, width, yLowerBound);
-		g.drawLine(xCenter, yUpperBound, xCenter, y1);
-		g.drawLine(xCenter, yLowerBound, xCenter, y2);
+		int yUpperHorizLine = (int) (yCenter - fontHeight * 0.6);
+		int yLowerHorizLine = (int) (yCenter + fontHeight * 0.6);
+		b.yDrawnStrTop = (int) (yCenter - fontHeight * 0.5);
+		b.yDrawnStrBottom = (int) (yCenter + fontHeight * 0.5);
+		b.width = width;
+		b.fontHeight = fontHeight;
+
+		g.drawLine(0, yUpperHorizLine, width, yUpperHorizLine);
+		g.drawLine(0, yLowerHorizLine, width, yLowerHorizLine);
+		g.drawLine(xCenter, yUpperHorizLine, xCenter, b.yDrawnStrTop);
+		g.drawLine(xCenter, yLowerHorizLine, xCenter, b.yDrawnStrBottom);
+		return b;
+	}
+
+	public static void drawBlankRect(Graphics g, Bound b) {
+		g.setColor(Color.WHITE);
+		g.fillRect(0, b.yDrawnStrTop, b.width, b.fontHeight);
+		g.setColor(Color.BLACK);
 	}
 
 	public static void speedReader(String filename, int width, int height, int fontSize, int wpm)
@@ -66,19 +83,19 @@ public class SpeedReader {
 		int fontHeight = m.getHeight();
 		int yCoord = (height + fontHeight / 2) / 2;
 		int xCenter = width / 2;
+
 		g.setFont(f);
-		
+		Bound b = drawFrame(g, width, height, fontHeight);
+
 		while (text.hasNext()) {
 			String nextWord = text.next();
 			Offset o = findHorizOffset(nextWord, m);
-			
-			drawFrame(g, width, height, fontHeight);
+
 			g.drawString(nextWord, xCenter - o.total, yCoord);
 			g.setColor(Color.RED);
 			g.drawString(nextWord.substring(o.id, o.id + 1), xCenter - o.centeredChar, yCoord);
-			g.setColor(Color.BLACK);
 			Thread.sleep(60000 / wpm);
-			panel.clear();
+			drawBlankRect(g, b);
 		}
 		System.out.println("Total words read: " + text.getWordCount());
 		System.out.println("Total sentences read: " + text.getSentCount());
