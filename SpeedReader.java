@@ -41,6 +41,20 @@ public class SpeedReader {
 		}
 		return o;
 	}
+	
+	public static void drawFrame(Graphics g, int width, int height, int fontHeight) {
+		int xCenter = width / 2;
+		int yCenter = height / 2;
+		int yUpperBound = (int) (yCenter - fontHeight * 0.6);
+		int yLowerBound = (int) (yCenter + fontHeight * 0.6);
+		int y1 = (int) (yCenter - fontHeight * 0.5);
+		int y2 = (int) (yCenter + fontHeight * 0.5);
+		
+		g.drawLine(0, yUpperBound, width, yUpperBound);
+		g.drawLine(0, yLowerBound, width, yLowerBound);
+		g.drawLine(xCenter, yUpperBound, xCenter, y1);
+		g.drawLine(xCenter, yLowerBound, xCenter, y2);
+	}
 
 	public static void speedReader(String filename, int width, int height, int fontSize, int wpm)
 			throws IOException, InterruptedException {
@@ -51,17 +65,17 @@ public class SpeedReader {
 		WordGenerator text = new WordGenerator("test.txt");
 		int fontHeight = m.getHeight();
 		int yCoord = (height + fontHeight / 2) / 2;
-		
+		int xCenter = width / 2;
 		g.setFont(f);
-		width /= 2;
 		
 		while (text.hasNext()) {
 			String nextWord = text.next();
 			Offset o = findHorizOffset(nextWord, m);
 			
-			g.drawString(nextWord, width - o.total, yCoord);
+			drawFrame(g, width, height, fontHeight);
+			g.drawString(nextWord, xCenter - o.total, yCoord);
 			g.setColor(Color.RED);
-			g.drawString(nextWord.substring(o.id, o.id + 1), width - o.centeredChar, yCoord);
+			g.drawString(nextWord.substring(o.id, o.id + 1), xCenter - o.centeredChar, yCoord);
 			g.setColor(Color.BLACK);
 			Thread.sleep(60000 / wpm);
 			panel.clear();
