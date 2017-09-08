@@ -37,11 +37,4 @@ public class WordGenerator {
 	public int getSentCount() {
 		return this.sentCount;
 	}
-
-//	public static void main(String[] args) throws IOException {
-//		WordGenerator g = new WordGenerator("test1.txt");
-//		while (g.hasNext()) {
-//			System.out.println(g.next());
-//		}
-//	}
 }
