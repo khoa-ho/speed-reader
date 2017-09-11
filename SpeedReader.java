@@ -60,6 +60,7 @@ public class SpeedReader {
 		b.width = width;
 		b.fontHeight = fontHeight;
 
+		((Graphics2D) g).setStroke(new BasicStroke(Math.max(fontHeight / 20, 1)));
 		g.drawLine(0, yUpperHorizLine, width, yUpperHorizLine);
 		g.drawLine(0, yLowerHorizLine, width, yLowerHorizLine);
 		g.drawLine(xCenter, yUpperHorizLine, xCenter, b.yDrawnStrTop);
