@@ -1,13 +1,12 @@
 # CSC-207 (Fall 2017, Section 01) Homework 2: Speed Reader
 
-#### Implement a text speed reader using a method called Rapid Serial Visual Presentation (RSVP)
+### Implement a text speed reader using a method called Rapid Serial Visual Presentation (RSVP)
 
 * *Authors:* Enrique Rueda and Khoa Ho
 * *Emails:* [ruedaenr] and [hokhoa]
 
-Link for excerpts: https://www.testprepreview.com/modules/reading1.htm
 
-##### Usability Testing
+#### Usability Testing
 Summary:
 
 Both readers were having initial trouble adjusting to the speed reader
@@ -113,3 +112,5 @@ Answer: $1,000
 
 What was the height and length of the first planes flight?
 Answer: Height = 120ft Duration: 12 Seconds
+
+Link for excerpts: https://www.testprepreview.com/modules/reading1.htm
