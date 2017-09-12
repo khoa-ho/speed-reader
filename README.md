@@ -7,7 +7,8 @@
 
 Link for excerpts: https://www.testprepreview.com/modules/reading1.htm
 
-Summary Paragraph:
+##### Usability Testing
+Summary:
 
 Both readers were having initial trouble adjusting to the speed reader
 because of the moving words and how fast the words are moving. After
